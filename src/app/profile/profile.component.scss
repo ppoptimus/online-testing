@@ -1,0 +1,39 @@
+@media only screen and (max-width: 1141px){
+    .PC{
+        display:none
+    }
+    .KanitFont div,
+    .KanitFont span, 
+    .KanitFont h3, 
+    .KanitFont h1, 
+    .KanitFont p{
+        font-family:  'kanit';
+// font-family:  'Prompt', sans-serif;
+    }
+    .container{
+        display: block;
+    }
+    .imgMargin{
+        margin-top: 20px;
+    }
+    .maxHeight450PX{
+        max-height: 400px !important;
+    }
+    .maxHeigh200PX{
+        max-height: 200px !important;
+    }
+
+}
+@media only screen and (min-width: 1140px){
+    .mobile{
+        display:none
+    }
+    .KanitFont div,
+    .KanitFont span, 
+    .KanitFont h3, 
+    .KanitFont h1, 
+    .KanitFont p{
+        font-family:  'kanit';
+    }
+
+}

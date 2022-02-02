@@ -1,0 +1,25 @@
+@media only screen and (max-width: 1141px){
+    .PC{
+        display:none
+    }
+    .maxHeight850PX{
+        max-height: 850px !important;
+    }
+    img {
+        width: 90%;
+        height: auto;
+        left: 85px;
+        margin-top: 10px;
+    }
+    .container{
+        height: 650px;
+        margin-top: 20%;
+    }
+
+}
+@media only screen and (min-width: 1140px){
+    .mobile{
+        display:none
+    }
+
+}

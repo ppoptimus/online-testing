@@ -1,0 +1,330 @@
+<app-top-bar [data]="topBarData"></app-top-bar>
+<div class="PC">
+    <div *ngIf="dataTest == false" class="secondIndex KanitFont">
+        <div style="width: 90%;margin-top: 50px;margin-bottom: 20px;" class="container profileContainerSize whiteBackground maxHeigh200PX">
+            <div style="margin-left: auto;margin-right: auto;"  class="marginTop30PX KanitFont">
+                <div class="textCenter width100P">
+                    <mat-icon class="fontSize50" style="margin-top: -10px;margin-left: -26px; color:red;">cancel</mat-icon>
+                    <h2 style="margin-top: 10px; font-family: 'Prompt', sans-serif;" class="greyFont">ระบบขัดข้องกรุณาติดต่อเจ้าหน้าที่</h2>
+                </div>
+                <div class="textCenter width100P">
+                    <button mat-button (click)="back()" mat-button class="whiteFont profileButton" >
+                        <mat-icon style="    margin-bottom: 15px;
+                        font-size: 40px;
+                        padding-right: 10px;
+                        margin-left: -20px;">arrow_left</mat-icon>
+                        <span style="font-family: 'Prompt', sans-serif;">ย้อนกลับ</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="dataTest" class="secondIndex KanitFont">
+        <div class="margin30PX">
+            <div class="width100P testEngineContainer2 whiteBackground borderRadius7PX">
+                <div class="marginLR30PX paddingTop20px">
+                    <div [class]="cssTime +' borderRadius7PX '">
+                        <!-- {{date | date :'medium'}} -->
+                        <div class="marinLR50PX">
+                            <div fxLayout *ngIf="testData">
+                                <div fxFlex="50%" class="marinTB20PX fontSize20">
+                                    <div class="marginBTM10PX"><span>สาขา: {{dataTest.course_name}} | ระดับ: {{testData.level}} </span></div>
+                                    <div style="margin-bottom: 10px;"><span>หมวด : <b>{{dataTest.topic_name}}</b></span></div>
+                                    <div><span>วันที่ : {{moment(testData.from_date).add(543, 'years') | date:'mediumDate':'':'th'}} - {{moment(testData.to_date).add(543 ,'year') | date:'mediumDate':'':'th'}}</span></div>
+                                    
+                                </div>
+                                <div fxFlex="50%" class="textRight marinTB20PX" style="margin-top: 30px;">
+                                    <mat-icon class="fontSize40 redFont" style=" position: absolute;margin-top: -10px;">access_time</mat-icon>
+                                         <span [class]="cssTimeText +' fontSize30 marginL40PX'">เหลือเวลา</span>
+                                    <countdown #countdown [config]="{leftTime: second,notify: [60]}"  (event)="handleEvent($event)" class="fontSize30"style="margin-left: 10px;"></countdown>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="marinLR50PX">
+                        <div fxLayout>
+                            <div fxFlex="80%" class="marinTB20PX fontSize20">
+                                
+                                <!-- <button mat-button class="profileButton whiteFont width150PX float absolute" style="margin-top: 246px;z-index:10">ส่งข้อสอบ</button> -->
+                                <p>ข้อ {{dataTest.question.question_no}} / {{dataTest.question.total_questions}}</p>
+                                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                    <!-- <button mat-button class="profileButton whiteFont" style="margin-top: 246px;margin-left:-50px;z-index:10;width: 30px;"><mat-icon>skip_previous</mat-icon></button>
+                                    <button mat-button class="profileButton whiteFont" style="margin-top: 246px;margin-left:-50px;z-index:10;width: 30px;"><mat-icon>skip_previous</mat-icon></button> -->
+                                    <div class="marinTB20PX float " [style]="dataTest.question.question_no == 1 ? 'visibility: hidden;':''">
+                                        <button (click)="action('previous')" mat-button class="NextPrevious" style="margin-left:-50px;z-index:10;width: 30px;"><mat-icon>skip_previous</mat-icon></button>
+                                    </div>
+                                    <div class="textCenter fontSize30 questionName" ><span (click)="zoomIMG(dataTest.question.question_name)" style="word-break: break-word;line-height: 35px;"  [innerHTML]="dataTest.question.question_name"></span></div>
+                                    <div class="marinTB20PX float " [style]="dataTest.question.question_no == dataTest.question.total_questions ? 'visibility: hidden;':''">
+                                        <button (click)="action('next')" mat-button class="NextPrevious" style="margin-right:20px;z-index:10;width: 30px;"><mat-icon>skip_next</mat-icon></button>
+                                    </div>
+                                </div>
+                                <div style="padding-bottom: 35px ">
+                                    <div *ngIf="dataTest.question.is_match==false">
+                                        <mat-radio-group [(ngModel)]="selected">
+                                            <div fxLayout="row wrap">
+                                                <div fxFlex="50%" *ngFor="let choice of dataTest.question.choices" class="marginBTM20PX">
+                                                    <div  class="choiceContainer margin50PX" >
+                                                        <div fxLayout class="marginT50PX marginLR30PX">
+                                                            <mat-radio-button [value]="choice.choice_no" [checked]="choice.choice_no==dataTest.question?.selected_choice ? 'true':'false'">
+                                                            </mat-radio-button>
+                                                            <span (click)="zoomIMG(choice.choice_name)" style="word-break: break-word;" [innerHTML]="choice.choice_name | safeurl"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-radio-group>
+                                    </div>
+                                    <div *ngIf="dataTest.question.is_match==true">
+                                        <div fxLayout >
+                                            <div fxFlex="100%">
+                                                <div  class="choiceContainer margin20PX minHeight75PX">
+                                                    <div class="margin20PX marginLR30PX">
+                                                        <div fxLayout="column">
+                                                            <form  [formGroup]=formArray>
+                                                                <div formArrayName="questions" class="flex_row_between" style="width: 100%;" >
+                                                                    <ng-container *ngFor="let item of formArray['controls']['questions']['controls'];let i = index"
+                                                                    [formGroupName]="i" style="width: 100%;">
+                                                                    <div style="width: 100%;" >
+                                                                        <span style="margin-right: 20px;"(click)="zoomIMG(dataTest.question.question_matches[i].question_name)" [innerHTML]="dataTest.question.question_matches[i].question_name | safeurl"></span>
+                                                                        <mat-form-field appearance="outline">
+                                                                            <mat-select formControlName="selected_choice_id">
+                                                                                <mat-option *ngFor="let choice of dataTest.question.choices" [value]="choice.test_choice_id">
+                                                                                    <span>{{choice.choice_no}}</span>
+                                                                                </mat-option>
+                                                                            </mat-select>
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                </ng-container>
+                                                                </div> 
+                                                            </form>
+                                                            <!-- <mat-form-field appearance="fill" fxFlex="100%" style="margin-top: 20px;"  >
+                                                                <mat-label style="color: grey;">คำตอบ</mat-label>
+                                                                <mat-select [(ngModel)]="selected">
+                                                                    <mat-option *ngFor="let choice of dataTest.question.choices" [value]="choice.choice_no">
+                                                                        <span (click)="zoomIMG(choice.choice_name)" style="word-break: break-word;" [innerHTML]="choice.choice_name | safeurl"></span>
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="50%" >
+                                                <div fxLayout="column" >
+                                                    <div fxFlex="50%" *ngFor="let choice of dataTest.question.choices">
+                                                        <div  class="choiceContainer minHeight75PX margin20PX" >
+                                                            <div class="margin20PX marginLR30PX">
+                                                                <span (click)="zoomIMG(choice.choice_name)"style="word-break: break-word;" [innerHTML]="choice.choice_name | safeurl"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div fxFlex="250px" class="marinTB20PX" style="overflow:auto;z-index: 0;">
+                                <div fxLayout="column" class="testCheckBox borderRadius7PX">
+                                    <div style="height:auto;width:200px;margin-left: 21px;margin-top:10px;min-height:100px">                       
+                                        <div fxLayout="row wrap" >
+                                            <div  *ngFor="let question of dataTest.questions">
+                                                <button mat-icon-button (click)="action('goto',question.question_no)">
+                                                    <mat-icon *ngIf="question.is_answer==true" [class]="question.question_no==dataTest.question.question_no ? 'selectedChoice':''  +' textLeft'" style="color: rgb(0, 189, 116);">
+                                                        check_box
+                                                    </mat-icon>
+                                                    <mat-icon *ngIf="question.is_answer==false" [class]="question.question_no==dataTest.question.question_no ? 'selectedChoice':''  +' textLeft'" style="color: #DEE8E7;">
+                                                        check_box_outline_blank
+                                                    </mat-icon>
+                                                    <mat-icon *ngIf="question.is_answer==null" [class]="question.question_no==dataTest.question.question_no ? 'selectedChoice':''  +' textLeft'" style="color: rgb(0, 123, 172);">
+                                                        indeterminate_check_box
+                                                    </mat-icon>
+                                                    <span class="blackFont">{{question.question_no}}</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="margin20PX textCenter">
+                                        <hr>
+                                        <div class="marginT40PX">
+                                            <button mat-button class="profileButton whiteFont width150PX" style="font-family: 'Prompt', sans-serif;" (click)="openDialog('Confirm')">ส่งข้อสอบ</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<div class="mobile">
+    <div *ngIf="dataTest" class="secondIndex KanitFont">
+        <div class="margin30PX" *ngIf="candidateData">
+            <div class="width100P testEngineContainer2 whiteBackground borderRadius7PX" style="padding-top: 1px; padding-bottom: 1px;margin-bottom: 20px;">
+                <div [class]="' lightGreenBackground borderRadius7PX '"style="margin-top: 20px;margin-bottom: 20px;margin: 20px;">
+                    <!-- {{date | date :'medium'}} -->
+                    <div style="margin: 20px;">
+                        <div  class="marinTB20PX fontSize20">
+                            <div class="marginBTM10PX" style="padding-top: 20px;">
+                                <p><span>ชื่อ: {{candidateData.candidate_name}} ({{candidateData.citizen_id}})</span></p>
+                                <p><span>สาขา: {{dataTest.course_name}}</span></p>
+                                <p><span>ระดับ: {{testData.level}}</span></p>
+                                <p><span>หมวด : <b>{{dataTest.topic_name}}</b></span></p>
+                            </div>
+                            <div style="padding-bottom: 20px;"><span>วันที่ : {{moment(testData.from_date).add(543, 'years') | date:'mediumDate':'':'th'}} - {{moment(testData.to_date).add(543 ,'year') | date:'mediumDate':'':'th'}}</span></div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="width100P testEngineContainer2 whiteBackground borderRadius7PX" style="padding-top: 1px; padding-bottom: 1px;margin-bottom: 20px;">
+                <div width="100%" class="marinTB20PX" style="overflow:auto;z-index: 0;">
+                    <div fxLayout="column" class="borderRadius7PX" style="margin-right: 10px;">
+                        <div style="height:auto;margin-left: 21px;margin-top:10px;min-height:100px">                       
+                            <div fxLayout="row wrap" >
+                                <div  *ngFor="let question of dataTest.questions">
+                                    <button mat-icon-button (click)="action('goto',question.question_no)">
+                                        <mat-icon *ngIf="question.is_answer==true" [class]="question.question_no==dataTest.question.question_no ? 'selectedChoice':''  +' textLeft'" style="color: rgb(0, 189, 116);">
+                                            check_box
+                                        </mat-icon>
+                                        <mat-icon *ngIf="question.is_answer==false" [class]="question.question_no==dataTest.question.question_no ? 'selectedChoice':''  +' textLeft'" style="color: #DEE8E7;">
+                                            check_box_outline_blank
+                                        </mat-icon>
+                                        <mat-icon *ngIf="question.is_answer==null" [class]="question.question_no==dataTest.question.question_no ? 'selectedChoice':''  +' textLeft'" style="color: rgb(0, 123, 172);">
+                                            indeterminate_check_box
+                                        </mat-icon>
+                                        <span class="blackFont">{{question.question_no}}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" textCenter">
+                            <button mat-button class="profileButton whiteFont width150PX" style="font-family: 'Prompt', sans-serif;" (click)="openDialog('Confirm')">ส่งข้อสอบ</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="width100P testEngineContainer2 whiteBackground borderRadius7PX">
+                <div  style="margin-left: 20px;margin-right: 20px;padding-top: 1px;"> 
+                    <div [class]="cssTime +' borderRadius7PX '">
+                        <div  class="textCenter marinTB20PX" style="padding-top: 15px; padding-bottom: 10px;">
+                            <mat-icon class="fontSize40 redFont" style=" position: absolute;margin-top: -10px;">access_time</mat-icon>
+                                 <span [class]="cssTimeText +' fontSize30 marginL40PX'">เหลือเวลา</span>
+                            <countdown #countdown [config]="{leftTime: second,notify: [60]}"  (event)="handleEvent($event)" class="fontSize30"style="margin-left: 10px;"></countdown>
+                        </div>
+                    </div>
+                    <div width="100%" class="marinTB20PX fontSize20">
+                        <!-- <div fxLayout="row" fxLayoutAlign="space-between center" >
+                            <button mat-flat-button class="NextPrevious" style="color:black;visibility: hidden"><mat-icon>search</mat-icon></button>
+                            <button mat-flat-button class="NextPrevious" style="color:black"><mat-icon>search</mat-icon></button>
+                        </div> -->
+                        
+                        <!-- <button mat-button class="profileButton whiteFont width150PX float absolute" style="margin-top: 246px;z-index:10">ส่งข้อสอบ</button> -->
+                        <div fxLayout="row" fxLayoutAlign="space-between center" >
+                            <!-- <button mat-button class="profileButton whiteFont" style="margin-top: 246px;margin-left:-50px;z-index:10;width: 30px;"><mat-icon>skip_previous</mat-icon></button>
+                            <button mat-button class="profileButton whiteFont" style="margin-top: 246px;margin-left:-50px;z-index:10;width: 30px;"><mat-icon>skip_previous</mat-icon></button> -->
+                            <div>
+                                <div class="marinTB20PX float " [style]="dataTest.question.question_no == 1 ? 'visibility: hidden;':''">
+                                    <button (click)="action('previous')" mat-button class="NextPrevious" style="z-index:10;width: 30px;"><mat-icon>skip_previous</mat-icon></button>
+                                </div>
+                               
+                                
+                            </div>
+                            <div class="textCenter fontSize30" >
+                                <p>ข้อ {{dataTest.question.question_no}} / {{dataTest.question.total_questions}}</p>
+                            </div>
+                            <div class="marinTB20PX float " [style]="dataTest.question.question_no == dataTest.question.total_questions ? 'visibility: hidden;':''">
+                                <button (click)="action('next')" mat-button class="NextPrevious" style="margin-left:10px;z-index:10;width: 30px;"><mat-icon>skip_next</mat-icon></button>
+                            </div>
+                            
+                            
+                        </div>
+                        <div class="textCenter fontSize30 questionName" ><span (click)="zoomIMG(dataTest.question.question_name)" style="word-break: break-word;line-height: 35px;"  [innerHTML]="dataTest.question.question_name"></span></div>
+                        <div style="padding-bottom: 60px ">
+                            <div *ngIf="dataTest.question.is_match==false">
+                                <mat-radio-group [(ngModel)]="selected">
+                                    <div fxLayout="row wrap">
+                                        <div fxFlex="100%" *ngFor="let choice of dataTest.question.choices" class="marginBTM20PX">
+                                            <div  class="choiceContainer margin50PX" >
+                                                <div fxLayout class="marginT50PX marginLR30PX">
+                                                    <mat-radio-button [value]="choice.choice_no" [checked]="choice.choice_no==dataTest.question?.selected_choice ? 'true':'false'">
+                                                    </mat-radio-button>
+                                                    <span (click)="zoomIMG(choice.choice_name)" style="word-break: break-word;" [innerHTML]="choice.choice_name | safeurl"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+                            <div *ngIf="dataTest.question.is_match==true">
+                                <div  class="choiceContainer margin20PX minHeight75PX">
+                                    <div class="margin20PX marginLR30PX">
+                                        <div fxLayout="column">
+                                            <form [formGroup]=formArray>
+                                                <div formArrayName="questions" class="flex_row_between" style="width: 100%;" >
+                                                    <ng-container *ngFor="let item of formArray['controls']['questions']['controls'];let i = index"
+                                                    [formGroupName]="i" style="width: 100%;">
+                                                    
+                                                    <div style="width: 100%;" >
+                                                        <span (click)="zoomIMG(dataTest.question.question_matches[i].question_name)" [innerHTML]="dataTest.question.question_matches[i].question_name | safeurl"></span>
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-select formControlName="selected_choice_id">
+                                                                <mat-option *ngFor="let choice of dataTest.question.choices" [value]="choice.test_choice_id">
+                                                                    <span>{{choice.choice_no}}</span>
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    
+                                                    </ng-container>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div fxLayout="column" >
+                                    <div fxFlex="50%" *ngFor="let choice of dataTest.question.choices">
+                                        <div  class="choiceContainer minHeight75PX margin20PX" >
+                                            <div class="margin20PX marginLR30PX">
+                                                <span style="word-break: break-word;" [innerHTML]="choice.choice_name | safeurl"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div width="100%" *ngFor="let choice of dataTest.question.choices">
+                                    <div  class="choiceContainer minHeight75PX margin20PX" >
+                                        <div class="margin20PX marginLR30PX">
+                                            <span (click)="zoomIMG(choice.choice_name)"style="word-break: break-word;"  [innerHTML]="choice.choice_name | safeurl"></span>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                            <!-- <div fxLayout >
+                                <div fxFlex="100%">
+                                    
+                                </div>
+                                
+                            </div> -->
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <pre>{{formArray.getRawValue() | json}}</pre> -->
+
+
+
+
+
+

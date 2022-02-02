@@ -1,0 +1,127 @@
+<app-top-bar></app-top-bar>
+<div class="PC"  *ngIf="student">
+    <div *ngIf="student" fxLayout="row" style="margin-right: auto;margin-left: auto;">
+        <div fxFlex="645px"class="container profileContainerSize whiteBackground maxHeigh250PX " style="margin-right: 5px;max-width: 745px;">
+            <div class="width25P imgMargin"style="max-width: 250px;min-width: 200px;">
+                <img class="borderRadius100PX imgSquare"[src]="student.candidate.candidate_img_base64" >
+            </div>
+            <div class="marginAuto width50P "style="max-width: 500px;min-width: 400px;">
+                <div style="border-left: 1px solid #DFDFDF;">
+                    <div class="greyBlackFont fontSize15"style="padding-left: 30px;">
+                        <p >{{student.candidate.candidate_name}}  ({{student.candidate.citizen_id}})</p>
+                        <p > สถานที่สอบ {{student.test.location_name}} </p>
+                        <p >
+                            วันที่ {{moment(student.test.from_date).add(543 ,'year') | date:'mediumDate':'':'th'}} 
+                            - {{moment(student.test.to_date).add(543 ,'year') | date:'mediumDate':'':'th'}}
+                        </p>
+                        <!-- <h3 style="margin-top: 25px !important;font-family: 'Prompt', sans-serif;">
+                            <b>ระดับ:   {{student.course.level}}</b>
+                        </h3> -->
+                    </div>   
+                </div>
+            </div>
+        
+        </div>
+        <div fxFlex="450px"class="container profileContainerSize whiteBackground maxHeigh250PX" style="margin-left: 5px;">
+            <div style="margin-left: auto;margin-right: auto;margin-top: 40px;" class="fontSize20 blueFont">
+                <p class="textCenter">สาขาการทดสอบครั้งนี้ คือ  </p>
+                <p class="textCenter"> {{student.course.course_name}} </p>
+                <p class="textCenter" style="font-family: 'Prompt', sans-serif;">
+                    ระดับ:   {{student.course.level}}
+                </p>
+                <p class="textCenter">จำนวน {{student.course.no_of_randoms}} ข้อ | เวลาทำข้อสอบ {{student.course.test_time}} นาที </p>
+                <div class="marginAuto textCenter"style="max-width: 150px;">
+                    
+                    <button *ngIf="btnStatus==false" mat-button class="whiteFont profileButton" disabled=true>
+                        <mat-icon style="    margin-bottom: 15px;
+                        font-size: 40px;
+                        padding-right: 10px;
+                        margin-left: -20px;">arrow_right</mat-icon>
+                        <span style="font-family: 'Prompt', sans-serif;">เริ่มทำการทำสอบ</span>
+                        
+                    </button>
+                    <button *ngIf="btnStatus==true" mat-button class="whiteFont profileButton" [routerLink]="['/test-engine',student.test.test_id]">
+                        <mat-icon style="    margin-bottom: 15px;
+                        font-size: 40px;
+                        padding-right: 10px;
+                        margin-left: -20px;">arrow_right</mat-icon>
+                        <span style="font-family: 'Prompt', sans-serif;">เริ่มทำการทำสอบ</span>
+                        
+                    </button>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div *ngIf="student" class="container profileContainerSize whiteBackground marginTop20PX">
+        <div class="margin40PX textCenter width100P">
+            <button mat-button (click)="openDialog('guide')" class="greyFont" style="width: 50px;height: 50px;">
+                <mat-icon class="fontSize50" style="margin-top: -26px;margin-left: -26px;">play_circle_outline</mat-icon>
+            </button>
+            <h2 style="margin-top: 20px; font-family: 'Prompt', sans-serif;" class="greyFont">กดเพื่อดูวีดีโอการใช้งานแบบทดสอบออนไลน์</h2>
+        </div>
+    </div>
+    
+</div>
+
+<div class="mobile" *ngIf="student">
+    <div style="margin-right: auto;margin-left: auto;margin-top: -20px;">
+        <div style="width: 90%;"class="container profileContainerSize whiteBackground maxHeight450PX">
+            <div class="width25P imgMargin"style="max-width: 250px;min-width: 200px;">
+                <img class="borderRadius100PX imgSquare" [src]="student.candidate.candidate_img_base64" >
+            </div>
+            <div class="marginAuto" style="margin-top: 20px;" >
+                <div class="greyBlackFont textCenter fontSize15">
+                    <p >{{student.candidate.candidate_name}}  ({{student.candidate.citizen_id}})</p>
+                        <p > สถานที่สอบ {{student.test.location_name}} </p>
+                        <p >
+                            วันที่ {{moment(student.test.from_date).add(543 ,'year') | date:'mediumDate':'':'th'}} 
+                            - {{moment(student.test.to_date).add(543 ,'year') | date:'mediumDate':'':'th'}}
+                        </p>
+                        
+                </div>
+                
+                
+            </div>
+        </div>
+        
+        <div style="width: 90%;margin-top: 20px;" class="container profileContainerSize whiteBackground maxHeigh250PX">
+            <div style="margin-left: auto;margin-right: auto;"  class="marginTop30PX fontSize20 blueFont">
+                <p class="textCenter">สาขาการทดสอบครั้งนี้ คือ  </p>
+                <p class="textCenter"> {{student.course.course_name}} </p>
+                <p class="textCenter">จำนวน {{student.course.no_of_randoms}} ข้อ </p>
+                <p class="textCenter">เวลาทำข้อสอบ {{student.course.test_time}} นาที </p>
+                <div class="marginAuto textCenter"style="max-width: 150px;margin-top:30px">
+                    <button *ngIf="btnStatus==false" mat-button class="whiteFont profileButton" disabled=true>
+                        <mat-icon style="    margin-bottom: 15px;
+                        font-size: 40px;
+                        padding-right: 10px;
+                        margin-left: -20px;">arrow_right</mat-icon>
+                        <span style="font-family: 'Prompt', sans-serif;">เริ่มทำการทำสอบ</span>
+                        
+                    </button>
+                    <button *ngIf="btnStatus==true" mat-button class="whiteFont profileButton" [routerLink]="['/test-engine',student.test.test_id]">
+                        <mat-icon style="    margin-bottom: 15px;
+                        font-size: 40px;
+                        padding-right: 10px;
+                        margin-left: -20px;">arrow_right</mat-icon>
+                        <span style="font-family: 'Prompt', sans-serif;">เริ่มทำการทำสอบ</span>
+                        
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div style="width: 90%;margin-top: 20px;margin-bottom: 20px;" class="container profileContainerSize whiteBackground maxHeigh200PX">
+            <div style="margin-left: auto;margin-right: auto;"  class="marginTop30PX KanitFont">
+                <div class="textCenter width100P">
+                    <button mat-button (click)="openDialog('guide')" class="greyFont" style="width: 50px;height: 50px;">
+                        <mat-icon class="fontSize50" style="margin-top: -26px;margin-left: -26px;">play_circle_outline</mat-icon>
+                    </button>
+                    <h2 style="margin-top: 20px; font-family: 'Prompt', sans-serif;" class="greyFont">กดเพื่อดูวีดีโอการใช้งานแบบทดสอบออนไลน์</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

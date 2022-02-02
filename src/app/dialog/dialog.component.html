@@ -1,0 +1,53 @@
+<div *ngIf="data.type=='Confirm'">
+    <p *ngIf="data.success==false" class="redFont">คุณยังทำไม่ครบทุกข้อ</p>
+    <p>คุณยืนยันการส่งแบบทดสอบใช่หรือไม่</p>
+    <div fxLayout="row" fxLayoutAlign="space-around center"  class="marginTop20PX">
+        <button mat-button  (click)="close();" class="profileButton whiteFont width130PX" style="font-family: 'Prompt', sans-serif;" >ยกเลิก</button>
+        <button mat-button  (click)="confirm(data.question_no);"  class="profileButton whiteFont width130PX" style="font-family: 'Prompt', sans-serif;" >ยืนยัน</button>
+    </div>
+</div>
+<div *ngIf="data.type=='timeOut'">
+    <mat-icon>error</mat-icon>
+    <p>หมดเวลาสอบ</p>
+</div>
+<div *ngIf="data.type=='dateCheck'">
+    <mat-icon>error</mat-icon>
+    <p>ไม่ได้อยู่ในช่วงวันเวลาของการสอบ</p>
+</div>
+<div *ngIf="data.type=='noLogin'">
+    <mat-icon>error</mat-icon>
+    <p>มีการเข้าระบบซ้ำซ้อน</p>
+    <p>ติดต่อผู้คุมสอบเพื่อปลดล็อค</p>
+</div>
+<div *ngIf="data.type=='zoom'">
+    <img [src]="data.IMGS[img_index]">
+    <div fxLayout="row" fxLayoutAlign="space-around center"  class="marginTop20PX">
+        <button *ngIf="data.IMGS.length > 1" mat-button  (click)="previousImg();" class="profileButton whiteFont width130PX imgbutton" 
+        [style]="img_index <= 0 ? 'visibility: hidden;':''">
+        <mat-icon>skip_previous</mat-icon></button>
+        
+        <p>{{img_index + 1 }} / {{data.IMGS.length}}</p>
+        <button mat-button *ngIf="data.IMGS.length > 1" (click)="nextImg();"  class="profileButton whiteFont width130PX imgbutton"
+        [style]="img_index >= data.IMGS.length-1 ? 'visibility: hidden;':''">
+        <mat-icon>skip_next</mat-icon></button>
+    </div>
+</div>
+<div *ngIf="data.type=='guide'">
+    <div class="textCenter">
+        <h2 style=" font-family: 'Prompt', sans-serif;" class="greyFont">การใช้งานแบบทดสอบออนไลน์</h2>
+        <video class="PC"width="550" controls>
+            <source src="assets/tutorial.mp4" type="video/mp4">
+            <!-- <source src="mov_bbb.ogg" type="video/ogg"> -->
+          </video>
+        <video class="mobile" width="100%" controls>
+            <source src="assets/tutorial.mp4" type="video/mp4">
+            <!-- <source src="mov_bbb.ogg" type="video/ogg"> -->
+          </video>
+        <button mat-button (click)="close()"class="profileButton whiteFont" style="width: 100%;margin-top: 10px;">
+            ปิดหน้าต่าง
+            <!-- <mat-icon class="fontSize50" style="margin-top: -26px;margin-left: -26px;">play_circle_outline</mat-icon> -->
+        </button>
+        
+    </div>
+</div>
+

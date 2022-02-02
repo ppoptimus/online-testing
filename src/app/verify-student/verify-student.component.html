@@ -1,0 +1,176 @@
+<div class="PC">
+  <div class="container" style="z-index: 3;">
+    <div class="fullWidth">
+        <mat-horizontal-stepper #stepper class="stepper whiteBackground"  style="  font-family: 'Prompt', sans-serif;">
+            <mat-step label="กรอกเลขบัตรประชาชน" class="greenBackground">
+              <div fxLayout="column" fxFlexAlign="center center" class="marginTop150PX">
+                <div align="center">
+                  <form [formGroup]="formID" >
+                    <!-- {{formID.valid}} -->
+                    <div style="color:black;  font-family: 'Prompt', sans-serif;">
+                         <!-- <mat-form-field > -->
+                       <mat-label >กรุณาใส่เลขบัตรประจำตัวประชาชน</mat-label><br>
+                        <input type="text" pattern="[0-9]{13}" minlength="13" maxlength="13"  placeholder="เลขบัตรประจำตัวประชาชน 13 หลัก" formControlName="numberID" required style=" 
+                        font-family: 'Prompt', sans-serif;
+                        /* margin-left: 60px; */
+                        text-align: center;">
+                        <!-- <button mat-raised-button (click)="reloadID()" style="font-family: 'Prompt', sans-serif;"><mat-icon class="material-icons">refresh</mat-icon></button> -->
+                    </div>
+                   <div>
+                    <button mat-button (click)="saveID('pc')" class="profileButton whiteFont" style="font-family: 'Prompt', sans-serif;">ถัดไป</button>
+                   </div>
+                </form>
+                </div>
+               </div>
+            </mat-step>
+            <mat-step label="ถ่ายรูป" state="chat">
+              <div class="textCenter marginTop50PX">
+                <div [hidden]="module=='capture'">
+                  <webcam [height]="380" (initError)="handleInitError($event)" [width]="380" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" [imageQuality]="1"></webcam>
+                </div>
+                <div  *ngIf="webcamImage && module=='capture'">
+                  <img [src]="webcamImage?.imageAsDataUrl" width="380px" />
+                  <!-- <img style="height:120px; width:110px" [src]="domSanitizer.bypassSecurityTrustUrl(webcamImage.imageAsDataUrl)" alt="Select Image"/> -->
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" class="marginTop20PX">
+                    <div fxFlex="150px" >
+                      <button *ngIf="module=='camera'"mat-button  (click)="triggerSnapshot();" class="profileButton whiteFont width130PX" style="font-family: 'Prompt', sans-serif;" ><mat-icon>camera_alt</mat-icon> ถ่ายรูป</button>
+                      <button *ngIf="module=='capture'"mat-button  (click)="newSnapshot();"  class="profileButton whiteFont width130PX" style="font-family: 'Prompt', sans-serif;" ><mat-icon>cancel</mat-icon> ถ่ายใหม่</button>
+              
+                    </div>
+                    <div fxFlex="150px">
+                      <button [disabled]="module=='camera'" mat-button matStepperNext class="profileButton whiteFont width130PX" (click)="loadingSuccess()" style="font-family: 'Prompt', sans-serif;" >ยืนยัน</button>
+              
+                    </div>
+                </div>
+               </div>
+            </mat-step>
+            <mat-step label="ยืนยันตัวตนสำเร็จ">
+              <div fxLayout="column" fxFlexAlign="center center" >
+                <!-- <p>You're welcome.</p> -->
+                <div *ngIf="img=='loading'" class="marginTop100PX">
+                  <div align="center">
+                      <img src="assets/newLoading.gif" width="150px" >
+                    </div>
+                
+                  <div align="center" style="color:black" >กำลังตรวจสอบข้อมูล...</div>
+                </div>
+                <div *ngIf="img=='checked'" class="marginTop100PX">
+                 
+                  <div align="center">
+                    <img src="assets/checked.png" width="200px">
+                  </div>
+                  <div align="center" style="color:black">
+                    ยินดีต้อนรับ<br>
+                    สู่แบบทดสอบออนไลน์ กรมพัฒนาฝีมือแรงงาน<br>
+                  </div>
+                  <div align="center" *ngIf="infos.length >= 1 && display == true">
+                  <h2 style="font-family: 'Prompt', sans-serif;">กรุณาเลือกวิชาสอบ</h2>
+                    <div fxLayout="row" fxLayoutAlign="space-around center" >
+                    <div align="center"*ngFor="let info of infos">
+                      <button *ngIf="info.test.test_status_id != -1 && info.test.test_status_id != 3" mat-button class="profileButton whiteFont width130PX" 
+                        [routerLink]="['/profile',info.candidate.candidate_id,info.test.test_id]" style="width:auto;margin:10px;font-family: 'Prompt', sans-serif;">
+                          {{info.course.course_name}}
+                        </button>
+                        <button *ngIf="info.test.test_status_id == -1 || info.test.test_status_id == 3"  mat-button class="profileButton whiteFont width130PX" 
+                        [routerLink]="['/profile',info.candidate.candidate_id,info.test.test_id]" style="width:auto;margin:10px;font-family: 'Prompt', sans-serif;">
+                          {{info.course.course_name}}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                   
+                </div>
+                
+              </div>
+            </mat-step>
+            <ng-template matStepperIcon="edit">
+              <mat-icon>check</mat-icon>
+            </ng-template>
+          </mat-horizontal-stepper>
+      </div>
+  </div>
+  <div class="containerBottom verifyBottomContainer" style="z-index: 1;">
+    <img src="assets/windows.png" alt=""> 
+  </div>
+</div>
+<div class="mobile">
+  <app-top-bar ></app-top-bar>
+  <div class="container " style="z-index: 3;">
+    <div class="fullWidth">
+      <mat-horizontal-stepper #stepperMobile class="stepper whiteBackground"  style="  font-family: 'Prompt', sans-serif;">
+          <mat-step label="กรอกเลขบัตรประชาชน" class="greenBackground">
+            <div fxLayout="column" fxFlexAlign="center center" style="margin-top: 130px;">
+              <div align="center">
+                <form [formGroup]="formID" >
+                  <!-- {{formID.valid}} -->
+                  <div style="color:black;  font-family: 'Prompt', sans-serif;">
+                        <!-- <mat-form-field > -->
+                      <mat-label >กรุณาใส่เลขบัตรประจำตัวประชาชน</mat-label><br>
+                      <input type="text" pattern="[0-9]{13}" minlength="13" maxlength="13"  placeholder="เลขบัตรประจำตัวประชาชน 13 หลัก" formControlName="numberMobileID" required style=" 
+                      font-family: 'Prompt', sans-serif;
+                      /* margin-left: 60px; */
+                      text-align: center;">
+                      <!-- <button mat-raised-button (click)="reloadID()" style="font-family: 'Prompt', sans-serif;"><mat-icon class="material-icons">refresh</mat-icon></button> -->
+                  </div>
+                  <div>
+                  <button mat-button (click)="saveID('mobile')" class="profileButton whiteFont height50PX" style="font-family: 'Prompt', sans-serif;width: 100%;font-size: 18px;">ถัดไป</button>
+                  </div>
+              </form>
+              </div>
+            </div>
+          </mat-step>
+          <mat-step label="ถ่ายรูป" state="chat">
+            <div class="textCenter marginTop50PX">
+              <div [hidden]="module=='capture'">
+                <webcam [height]="250" [width]="250" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" [imageQuality]="1"></webcam>
+              </div>
+              <div  *ngIf="webcamImage && module=='capture'">
+                <img [src]="webcamImage?.imageAsDataUrl" width="250px" />
+                <!-- <img style="height:120px; width:110px" [src]="domSanitizer.bypassSecurityTrustUrl(webcamImage.imageAsDataUrl)" alt="Select Image"/> -->
+              </div>
+              <div fxLayout="row" fxLayoutAlign="center center" class="marginTop40PX">
+                  <div fxFlex="150px" >
+                    <button *ngIf="module=='camera'"mat-button  (click)="triggerSnapshot();" class="profileButton whiteFont width130PX height50PX" style="font-family: 'Prompt', sans-serif;height: 50px;font-size: 18px;" ><mat-icon>camera_alt</mat-icon> ถ่ายรูป</button>
+                    <button *ngIf="module=='capture'"mat-button  (click)="newSnapshot();"  class="profileButton whiteFont width130PX height50PX" style="font-family: 'Prompt', sans-serif;font-size: 18px;" ><mat-icon>cancel</mat-icon> ถ่ายใหม่</button>
+            
+                  </div>
+                  <div fxFlex="150px">
+                    <button [disabled]="module=='camera'" mat-button matStepperNext class="profileButton whiteFont width130PX height50PX" (click)="loadingSuccess()" style="font-family: 'Prompt', sans-serif;font-size: 18px;" >ยืนยัน</button>
+            
+                  </div>
+              </div>
+            </div>
+          </mat-step>
+          <mat-step label="ยืนยันตัวตนสำเร็จ" >
+            <div fxLayout="column" fxFlexAlign="center center" >
+              <!-- <p>You're welcome.</p> -->
+              <div *ngIf="img=='loading'" class="marginTop100PX">
+                <div align="center">
+                    <img src="assets/newLoading.gif" width="150px" >
+                  </div>
+              
+                <div align="center" style="color:black" >กำลังตรวจสอบข้อมูล...</div>
+              </div>
+              <div *ngIf="img=='checked'" class="marginTop100PX">
+                
+                <div align="center">
+                  <img src="assets/checked.png" width="200px">
+                </div>
+                <div align="center" style="color:black">ยินดีต้อนรับ<br>
+                  สู่แบบทดสอบออนไลน์ กรมพัฒนาฝีมือแรงงาน</div>
+              </div>
+              
+            </div>
+          </mat-step>
+          <ng-template matStepperIcon="edit">
+            <mat-icon>check</mat-icon>
+          </ng-template>
+        </mat-horizontal-stepper>
+      </div>
+  </div>
+  <!-- <div class="containerBottom verifyBottomContainer" style="z-index: 1;">
+    <img src="assets/windows.png" alt=""> 
+  </div> -->
+</div>
+

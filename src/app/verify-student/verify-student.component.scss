@@ -1,0 +1,37 @@
+@media only screen and (max-width: 1141px){
+    .PC{
+        display:none
+    }
+    
+    .container{
+        width: 90%;
+        height: 100%;
+        margin-top: 25%;
+    }
+    ::ng-deep .mat-vertical-stepper-header{
+        width: 90%;
+    }   
+    ::ng-deep .mat-vertical-content-container{
+        margin-left: 0 !important;
+    }   
+    ::ng-deep input[type=text],::ng-deep input[type=number]{
+        width: 100%;
+        margin: 0px;
+        margin-top: 20px;
+        margin-bottom: 140px;
+    }   
+    // mat-step-header[ng-reflect-state='edit'] ,
+    // mat-step-header[ng-reflect-selected=true],
+    // mat-step-header[tabindex='0'],
+    // mat-step-header .mat-vertical-stepper-header,
+    // mat-step-header[area-selected='true']{
+    //     width: 700% !important;
+    // }   
+
+}
+@media only screen and (min-width: 1140px){
+    .mobile{
+        display:none
+    }
+
+}

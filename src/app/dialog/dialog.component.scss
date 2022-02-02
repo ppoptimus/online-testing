@@ -1,0 +1,19 @@
+@media only screen and (max-width: 1141px){
+    .PC{
+        display:none
+    }
+}
+@media only screen and (min-width: 1140px){
+    .mobile{
+        display:none
+    }
+
+}
+img {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+}
+.imgbutton{
+    font-family: 'Prompt', sans-serif;width: 75px;
+}

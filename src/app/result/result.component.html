@@ -1,0 +1,174 @@
+<app-top-bar ></app-top-bar>
+<div class="PC">
+    <div cstyle="margin-right: auto;margin-left: auto;margin-top: -40px;">
+        <div fxLayout="row" fxLayoutAlign="end" class="container profileContainerSize" style="border: none;box-shadow: none;height: 50px!important">
+            <!-- <div > -->
+                <div>
+                    <a mat-button class="whiteFont logoutBtn" routerLink="/" style="margin-top: 20px;margin-bottom: -10px;">
+                    <mat-icon style="
+                    padding-right: 10px;
+                    margin-left: -10px;">reply</mat-icon>
+                    <span style="font-family: 'Prompt', sans-serif;">ออกจากระบบ</span>
+                    </a>
+                </div>
+            <!-- </div> -->
+            
+        </div>
+    </div>
+    
+    <div *ngIf="studentTestData" fxLayout="row" style="margin-right: auto;margin-left: auto;margin-top: -20px;">
+        <div fxFlex="645px" *ngIf="candidate" class="container profileContainerSize whiteBackground maxHeigh250PX" style="margin-right: 5px;max-width: 645px;">
+            <div class="width25P imgMargin"style="max-width: 250px;min-width: 200px;">
+                <img class="borderRadius100PX imgSquare" [src]="candidate?.candidate_img_base64" >
+            </div>
+            <div class="marginAuto width50P"style="max-width: 500px;min-width: 400px;">
+                <div style="border-left: 1px solid #DFDFDF;">
+                    <div class="greyBlackFont fontSize15"style="padding-left: 30px;">
+                        <p >{{studentTestData.candidate.candidate_name}} ({{studentTestData.candidate.citizen_id}} )</p>
+                        <p > สถานที่ทดสอบ {{test.location_name == null ? '-': test.location_name}}  </p>
+                        <p >วันที่ทดสอบ {{moment(test.exam_date).add(543 ,'year') | date:'mediumDate':'':'th'}} </p>
+                        <p >สาขา {{course.course_name}} </p>
+                        <h3 style="margin-top: 25px !important;font-family: 'Prompt', sans-serif;">
+                            <b>ระดับ:   {{studentTestData.course.level}} </b>
+                        </h3>
+                        <div fxLayout="row" fxLayoutAlign="space-between center"  class="marginTop20PX">
+                            <p>จำนวนข้อสอบทั้งหมด {{studentTestData.course.no_of_randoms}} ข้อ</p>
+                            <p style="width: 165px;">เวลาทำข้อสอบ {{studentTestData.course.test_time}}  นาที</p>
+                        </div>
+                    
+                    </div>
+                    
+                </div>
+                
+            </div>
+        
+        </div>
+        <div fxFlex="450px"class="container profileContainerSize whiteBackground maxHeigh250PX" style="margin-left: 5px;">
+            <div *ngIf="test" style="margin-left: auto;margin-right: auto;"  class="marginTop30PX KanitFont">
+                <h1 *ngIf="course" class="textCenter greyBlackFont">
+                    ผลการทดสอบภาคความรู้
+                    <span *ngIf="test.is_pass == true && course.percent_full_score!=null" class="redFont">ผ่าน</span>
+                    <span *ngIf="test.is_pass == false && course.percent_full_score!=null"class="redFont">ไม่ผ่าน</span>
+                    <span *ngIf="test.is_pass == null && course.percent_full_score!=null"class="redFont">รอผล</span>
+                </h1> 
+                
+                <h3>
+                    <div class="textCenter fontSize25"  style="padding-top: 20px;width: 75%;height: 75px;margin-right: auto;margin-left: auto;background: rgba(45, 156, 219, 0.2);border-radius: 8px;">
+                       
+                        <b>จำนวนข้อที่ทำได้</b>
+                        <p>
+                            {{studentTestData.score.correct}}
+                        </p>
+                    </div>
+                    <p class="textCenter " style="padding-top: 20px;">
+                        <span *ngIf="test.is_pass == true || course.percent_full_score==null">คุณมีสิทธิ์เข้ารับการทดสอบภาคความสามารถ</span>
+                        <span *ngIf="test.is_pass == false && course.percent_full_score!=null">คุณไม่มีสิทธิ์เข้ารับการทดสอบภาคความสามารถ</span>
+                        <span *ngIf="test.is_pass == null && course.percent_full_score!=null">หากสอบผ่านคุณมีสิทธิ์เข้ารับการทดสอบภาคความสามารถ</span>
+                        
+                    </p>
+                </h3>
+                
+                
+                <!-- <div fxLayout="row" fxLayoutAlign="space-around center" >
+                    <div class="textCenter fontSize15" style="width: 150px;height: 120px;margin-right: 5px;background: rgba(45, 156, 219, 0.2);border-radius: 8px;">
+                        <div class="paddingTop20px ">
+                            <b>จำนวนข้อที่ทำได้</b>
+                        </div>
+                        <div class="paddingTop20px">
+                            <h1><b><span class="fontSize40">{{studentTestData.score.correct}}</span> </b></h1>
+                        </div>
+                    </div>
+                    <div class="textCenter" style="width: 150px;height: 120px;margin-left: 5px;background: rgba(244, 0, 0, 0.25);border-radius: 8px;">
+                        <div class="paddingTop20px">
+                            <b>ร้อยละของภาคความรู้</b>
+                        </div>
+                        <div class="paddingTop20px">
+                            <h1><b><span class="fontSize40">{{studentTestData.score.correct_percent}}</span>%</b></h1>
+                        </div>
+                    </div>
+                </div>  -->
+                <!-- <p class="textCenter greyBlackFont" style="padding-top: 20px;">
+                    <span>
+                        <mat-icon class="float absolute" style="margin-left: -30px;color:gold;">error</mat-icon>
+                        <b>ถูก {{studentTestData.score.correct}} ข้อจากข้อสอบ {{studentTestData.score.no_of_questions}} ข้อ</b>
+                    </span>
+                </p> -->
+                <!-- <p class="textCenter">จำนวน 30 ข้อ | เวลาทำข้อสอบ 20 นาที </p> -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile">
+    <div *ngIf="studentTestData" style="margin-right: auto;margin-left: auto;margin-top: -20px;">
+        <div style="width: 90%;"class="container profileContainerSize whiteBackground maxHeight450PX">
+            <div class="width25P imgMargin"style="max-width: 250px;min-width: 200px;">
+                <img class="borderRadius100PX imgSquare" [src]="candidate?.candidate_img_base64" >
+            </div>
+            <div *ngIf="test" class="marginAuto" style="margin-top: 20px;" >
+                <div *ngIf="course"class="greyBlackFont textCenter fontSize15">
+                    <p >{{studentTestData.candidate.candidate_name}} ({{studentTestData.candidate.citizen_id}} )</p>
+                    <p > สถานที่ทดสอบ {{test.location_name == null ? '-': test.location_name}}  </p>
+                    <!-- <p >วันที่ทดสอบ {{test.from_date | date:'mediumDate':'':'th'}} </p> -->
+                    <p >วันที่ทดสอบ {{moment(test.exam_date).add(543 ,'year') | date:'mediumDate':'':'th'}} </p>
+                    <p >สาขา {{course.course_name}} </p>
+                    <h3 style="margin-top: 25px !important;font-family: 'Prompt', sans-serif;">
+                        <b>ระดับ:   {{studentTestData.course.level}} </b>
+                    </h3>
+                    <div class="marginTop20PX">
+                        <p>จำนวนข้อสอบทั้งหมด {{studentTestData.course.no_of_randoms}} ข้อ</p>
+                        <p>เวลาทำข้อสอบ {{studentTestData.course.test_time}}  นาที</p>
+                    </div>
+                
+                </div>
+                
+            </div>
+        </div>
+        
+        <div style="width: 90%;margin-top: 20px;" class="container profileContainerSize whiteBackground maxHeigh250PX">
+            <div *ngIf="test" style="margin-left: auto;margin-right: auto;"  class="marginTop30PX KanitFont">
+                <h1 *ngIf="course"class="textCenter greyBlackFont">
+                    ผลการทดสอบภาคความรู้
+                    <span *ngIf="test.is_pass == true && course.percent_full_score!=null" class="redFont">ผ่าน</span>
+                    <span *ngIf="test.is_pass == false && course.percent_full_score!=null"class="redFont">ไม่ผ่าน</span>
+                    <span *ngIf="test.is_pass == null && course.percent_full_score!=null"class="redFont">รอผล</span>
+                </h1> 
+                
+                <h3>
+                    <div class="textCenter fontSize25"  style="padding-top: 20px;width: 75%;height: 75px;margin-right: auto;margin-left: auto;background: rgba(45, 156, 219, 0.2);border-radius: 8px;">
+                       
+                        <b>จำนวนข้อที่ทำได้</b>
+                        <p>
+                            {{studentTestData.score.correct}}
+                        </p>
+                    </div>
+                    <p class="textCenter " style="padding-top: 20px;">
+                        <span *ngIf="test.is_pass == true  || course.percent_full_score==null">คุณมีสิทธิ์เข้ารับการทดสอบภาคความสามารถ</span>
+                        <span *ngIf="test.is_pass == false && course.percent_full_score!=null">คุณไม่มีสิทธิ์เข้ารับการทดสอบภาคความสามารถ</span>
+                        <span *ngIf="test.is_pass == null && course.percent_full_score!=null">หากสอบผ่านคุณมีสิทธิ์เข้ารับการทดสอบภาคความสามารถ</span>
+                        
+                    </p>
+                </h3>
+                <!-- <h3 *ngIf="course?.percent_full_score == null">
+                    <p class="textCenter fontSize40"  style="padding-top: 20px;width: 75%;height: 50px;margin-right: auto;margin-left: auto;background: rgba(45, 156, 219, 0.2);border-radius: 8px;">
+                        <span class="redFont">สอบเสร็จแล้ว</span>
+                    </p>
+                    <p class="textCenter " style="padding-top: 20px;width: 90%;margin-left: auto;margin-right: auto;">
+                        <span >คุณมีสิทธิ์เข้ารับการทดสอบภาคความสามารถ</span>
+                        
+                    </p>
+                </h3> -->
+            </div>
+        </div>
+    </div>
+    <div cstyle="margin-right: auto;margin-left: auto;margin-top: 20px;">
+        <div class="container profileContainerSize" style="border: none;width: 90%;height: 50px;margin-top: 20px;box-shadow: none;">
+            <a mat-button class="whiteFont logoutBtn" routerLink="/" style="width:100%;">
+                <mat-icon style="
+                padding-right: 10px;
+                margin-left: -10px;">reply</mat-icon>
+                <span style="font-family: 'Prompt', sans-serif;">ออกจากระบบ</span>
+            </a>
+        </div>
+    </div>
+</div>
+
